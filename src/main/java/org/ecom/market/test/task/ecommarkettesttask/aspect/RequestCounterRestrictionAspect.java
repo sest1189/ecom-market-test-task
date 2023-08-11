@@ -1,7 +1,7 @@
 package org.ecom.market.test.task.ecommarkettesttask.aspect;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.RequestFacade;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,8 +32,8 @@ public class RequestCounterRestrictionAspect {
         MethodCallRestriction methodCallRestriction = methodRestrictions.get(methodName);
 
         for (Object o : joinPoint.getArgs()) {
-            if (o instanceof RequestFacade) {
-                String ipAddress = ((RequestFacade) o).getRemoteHost();
+            if (o instanceof HttpServletRequest) {
+                String ipAddress = ((HttpServletRequest) o).getRemoteHost();
                 log.info("ip address: " + ipAddress);
                 return validateNewCallAvailability(joinPoint, methodName, methodCallRestriction, ipAddress);
             }
